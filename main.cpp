@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
     std::cout << "type 'exit' to quit." << std::endl;
 
     while(true){
-        std::cout << "> ";
+        std::cout << "$ ";
         std::cin >> command;
         if(command == "exit") break;
         for(int pos = 0; pos < command.size(); ++pos){
