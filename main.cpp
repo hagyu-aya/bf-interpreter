@@ -2,6 +2,16 @@
 #include <string>
 #include <vector>
 
+// [と]がきちんと対応しているか
+bool is_valid(std::string code){
+    int cnt = 0;
+    for(int pos = 0; pos < code.size(); ++pos){
+        if(code[pos] == '[') ++cnt;
+        if(code[pos] == ']') --cnt;
+    }
+    return cnt == 0;
+}
+
 int main(int argc, char *argv[]) {
     std::vector<char> array(1);
     int ptr = 0;
@@ -13,6 +23,11 @@ int main(int argc, char *argv[]) {
         std::cout << "$ ";
         std::cin >> command;
         if(command == "exit") break;
+        while(!is_valid(command)){
+            std::string addition;
+            std::cin >> addition;
+            command += addition;
+        }
         for(int pos = 0; pos < command.size(); ++pos){
             switch(command[pos]){
                 case '+':
