@@ -126,6 +126,10 @@ int main(int argc, char *argv[]) {
     if(argc == 1) intaractive_mode_run();
     if(argc == 2) {
         std::string code = read_file(argv[1]);
+        if(!is_valid(code)){
+            std::cerr << "[と]が対応していません" << std::endl;
+            return 1;
+        }
         BrainFucker bf(code);
         bf.run();
     }
