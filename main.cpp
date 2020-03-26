@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <vector>
 
@@ -21,8 +22,8 @@ private:
     int ptr;
     std::string code;
 public:
-    BrainFucker(std::string code) : array(0), code(code) ,ptr(0) {}
-    BrainFucker() : array(0), code(""), ptr(0) {}
+    BrainFucker(std::string code) : array(1), code(code) ,ptr(0) {}
+    BrainFucker() : array(1), code(""), ptr(0) {}
 
     void run(std::string code) {
         for(int pos = 0; pos < code.size(); ++pos){
@@ -93,7 +94,17 @@ public:
     }
 };
 
-int main(int argc, char *argv[]) {
+std::string read_file(std::string file_name) {
+    std::string result;
+    std::ifstream ifs(file_name);
+    if(!ifs.fail()) {
+        std::string line;
+        while(std::getline(ifs, line)) result += line + '\n';
+    }
+    return result;
+}
+
+void intaractive_mode_run(){
     std::string command;
     BrainFucker bf;
     std::cout << "type 'exit' to quit." << std::endl;
@@ -109,4 +120,18 @@ int main(int argc, char *argv[]) {
         }
         bf.run(command);
     }
+}
+
+int main(int argc, char *argv[]) {
+    if(argc == 1) intaractive_mode_run();
+    if(argc == 2) {
+        std::string code = read_file(argv[1]);
+        BrainFucker bf(code);
+        bf.run();
+    }
+    if(argc >= 3) {
+        std::cerr << "Too many arguments." << std::endl;
+        return 1;
+    }
+    return 0;
 }
