@@ -65,9 +65,6 @@ int main(int argc, char *argv[]) {
                             pos = i-1;
                             break;
                         }
-                        if(i == command.size() - 1){
-                            std::cerr << "Oops! You forgot ']'." << std::endl;
-                        }
                     }
                     break;
                 case ']':
