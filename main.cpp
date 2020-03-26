@@ -12,24 +12,21 @@ bool is_valid(std::string code){
     return cnt == 0;
 }
 
-int main(int argc, char *argv[]) {
-    std::vector<char> array(1);
-    int ptr = 0;
-    std::string command;
+// array, ptr: bf実行時の配列, ポインタのindex; code: 実行するbfのコード(変更不可)
+// run(std::string) 引数をbfのコードとみなして実行
+// run() this->codeをbfのコードとみなして実行
+class BrainFucker{
+private:
+    std::vector<char> array;
+    int ptr;
+    std::string code;
+public:
+    BrainFucker(std::string code) : array(0), code(code) ,ptr(0) {}
+    BrainFucker() : array(0), code(""), ptr(0) {}
 
-    std::cout << "type 'exit' to quit." << std::endl;
-
-    while(true){
-        std::cout << "$ ";
-        std::cin >> command;
-        if(command == "exit") break;
-        while(!is_valid(command)){
-            std::string addition;
-            std::cin >> addition;
-            command += addition;
-        }
-        for(int pos = 0; pos < command.size(); ++pos){
-            switch(command[pos]){
+    void run(std::string code) {
+        for(int pos = 0; pos < code.size(); ++pos){
+            switch(code[pos]){
                 case '+':
                     ++array[ptr];
                     break;
@@ -58,9 +55,9 @@ int main(int argc, char *argv[]) {
                 // 1行の中で対応する[]がなければエラー
                 case '[':
                     if(array[ptr]) break;
-                    for(int i = pos + 1, cnt = 1; i < command.size(); ++i){
-                        if(command[i] == '[') ++cnt;
-                        if(command[i] == ']') --cnt;
+                    for(int i = pos + 1, cnt = 1; i < code.size(); ++i){
+                        if(code[i] == '[') ++cnt;
+                        if(code[i] == ']') --cnt;
                         if(cnt == 0) {
                             pos = i-1;
                             break;
@@ -70,8 +67,8 @@ int main(int argc, char *argv[]) {
                 case ']':
                     if(array[ptr] == 0) break;
                     for(int i = pos - 1, cnt = 1; i >= 0; --i){
-                        if(command[i] == '[') --cnt;
-                        if(command[i] == ']') ++cnt;
+                        if(code[i] == '[') --cnt;
+                        if(code[i] == ']') ++cnt;
                         if(cnt == 0) {
                             pos = i-1;
                             break;
@@ -89,5 +86,27 @@ int main(int argc, char *argv[]) {
                     break;
             }
         }
+    }
+
+    void run(){
+        run(code);
+    }
+};
+
+int main(int argc, char *argv[]) {
+    std::string command;
+    BrainFucker bf;
+    std::cout << "type 'exit' to quit." << std::endl;
+
+    while(true){
+        std::cout << "$ ";
+        std::cin >> command;
+        if(command == "exit") break;
+        while(!is_valid(command)){
+            std::string addition;
+            std::cin >> addition;
+            command += addition;
+        }
+        bf.run(command);
     }
 }
