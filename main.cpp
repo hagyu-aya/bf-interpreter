@@ -18,7 +18,7 @@ bool is_valid(std::string code){
 // run() this->codeをbfのコードとみなして実行
 class BrainFucker{
 private:
-    std::vector<char> array;
+    std::vector<unsigned char> array;
     int ptr;
     std::string code;
 public:
